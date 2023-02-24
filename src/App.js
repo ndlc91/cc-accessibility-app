@@ -1,9 +1,11 @@
 import './App.css';
+import './Components/Uploader';
+import Uploader from './Components/Uploader';
 
 function App() {
   return (
     <div className="App">
-      <h1>CC-ACCESSIBILITY APP</h1>
+      <Uploader />
     </div>
   );
 }

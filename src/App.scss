@@ -1,0 +1,30 @@
+@import "~bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+
+$primary-color: #31546C;
+
+.App {
+    font-size: 12px;
+    font-family: Inter, sans-serif;
+}
+
+.nav {
+    height: 3em;
+
+    .brand {
+        font-weight: 900;
+        color: $primary-color;
+    
+        .logo {
+            height: 2em;
+            width: 2em;
+            position: relative;
+            right: 1.5em;
+            bottom: .25em;
+        }
+    }
+}
+
+
+

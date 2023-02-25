@@ -16,6 +16,29 @@
         justify-content: center;
         align-items: center;
 
+        .popup {
+            height: 25em;
+            width: 35em;
+            background-color: white;
+            border-radius: 20px;
+            text-align: left;
+            padding: 1.5em;
+            
+            .form-check  {
+                margin-bottom: 2em;
+            }
+
+            p {
+                margin: 1em auto 0 auto;
+                font-size: 12px;
+            }
+            .form-control {
+                height: 2.5em;
+                font-size: 12px;
+            }
+
+        }
+
     
     }
     .transcript {

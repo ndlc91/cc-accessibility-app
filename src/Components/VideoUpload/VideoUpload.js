@@ -51,7 +51,7 @@ export function VideoUpload () {
                         </div>
                         <p>Choose a video file (mp4/mov):</p>
                         <div class="input-group">
-                            <input type="file" class="form-control" id="inputGroupFile04"
+                            <input type="file" class="form-control" id="inputGroupFile04" accept=".mp4, .mov"
                                    onChange={handleFileChange}/>
                         </div>
                         {subFile && (

@@ -53,15 +53,15 @@ export function VideoUpload() {
                                 <h6>Choose an option below indicating your video:</h6>
                                 <div className="form-check" onChange={handleRadioCheck}>
                                     <input value="raw" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
-                                    <label className="form-check-label" for="flexRadioDefault1">
+                                    <label className="form-check-label" htmlFor="flexRadioDefault1">
                                         Is RAW with NO captions or subtitles
                                     </label> <br />
                                     <input value="softSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                    <label className="form-check-label" for="flexRadioDefault2">
+                                    <label className="form-check-label" htmlFor="flexRadioDefault2">
                                         Has soft subtitles (has a separate subtitles file)
                                     </label> <br />
                                     <input value="hardSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
-                                    <label className="form-check-label" for="flexRadioDefault3">
+                                    <label className="form-check-label" htmlFor="flexRadioDefault3">
                                         Has hard subtitles (the video already has subtitles embedded)
                                     </label>
                                 </div>

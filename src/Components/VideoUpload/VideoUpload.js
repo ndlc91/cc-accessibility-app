@@ -2,7 +2,7 @@ import "./VideoUpload.scss";
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useState } from 'react';
-import {VideoPlayer} from '../VideoPlayer/VideoPlayer';
+import { VideoPlayer } from '../VideoPlayer/VideoPlayer';
 
 export function VideoUpload() {
     const [popup, setPopup] = useState(true);
@@ -48,50 +48,50 @@ export function VideoUpload() {
             <div className='wrap'>
                 <div className="video container">
                     {popup && (
-                    <>
-                        <div className='popup container'>
-                            <h6>Choose an option below indicating your video:</h6>
-                            <div class="form-check" onChange={handleRadioCheck}>
-                                <input value="raw" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Is RAW with NO captions or subtitles
-                                </label> <br />
-                                <input value="softSub" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Has soft subtitles (has a separate subtitles file)
-                                </label> <br />
-                                <input value="hardSub" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
-                                <label class="form-check-label" for="flexRadioDefault3">
-                                    Has hard subtitles (the video already has subtitles embedded)
-                                </label>
+                        <>
+                            <div className='popup container'>
+                                <h6>Choose an option below indicating your video:</h6>
+                                <div className="form-check" onChange={handleRadioCheck}>
+                                    <input value="raw" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
+                                    <label className="form-check-label" for="flexRadioDefault1">
+                                        Is RAW with NO captions or subtitles
+                                    </label> <br />
+                                    <input value="softSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                    <label className="form-check-label" for="flexRadioDefault2">
+                                        Has soft subtitles (has a separate subtitles file)
+                                    </label> <br />
+                                    <input value="hardSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
+                                    <label className="form-check-label" for="flexRadioDefault3">
+                                        Has hard subtitles (the video already has subtitles embedded)
+                                    </label>
+                                </div>
+                                <p>Choose a video file (mp4/mov):</p>
+                                <input type="file" name="file" className="form-control" id="inputGroupFile04" onChange={changeHandler} />
+                                <div>
+                                    <button onClick={() => { handleSubmission(); }}>Submit</button>
+                                </div>
+                                {subFile && (
+                                    <>
+                                        <p>Choose a subtitles file:</p>
+                                        <div className="input-group">
+                                            <input type="file" className="form-control" id="inputGroupFile04" />
+                                        </div>
+                                    </>
+                                )}
                             </div>
-                            <p>Choose a video file (mp4/mov):</p>
-                            <input type="file" name="file" class="form-control" id="inputGroupFile04" onChange={changeHandler} />
-                            <div>
-                                <button onClick={() =>{handleSubmission();}}>Submit</button>
-                            </div>
-                            {subFile && (
-                                <>
-                                    <p>Choose a subtitles file:</p>
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="inputGroupFile04" />
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </>)}
-                    
+                        </>)}
+
                     {!popup && (
                         <>
-                            <video  width="100%"
-                                    height="100%"
-                                    controls
-                                    src={src}
-                 ></video>
+                            <video width="100%"
+                                height="100%"
+                                controls
+                                src={src}
+                            ></video>
                         </>
                     )}
 
-                    
+
                 </div>
 
 

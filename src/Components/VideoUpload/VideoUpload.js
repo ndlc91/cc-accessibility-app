@@ -1,8 +1,6 @@
 import "./VideoUpload.scss";
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useState } from 'react';
-import { VideoPlayer } from '../VideoPlayer/VideoPlayer';
 
 export function VideoUpload() {
     const [popup, setPopup] = useState(true);

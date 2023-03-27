@@ -18,13 +18,13 @@ export function VideoUpload() {
     };
 
     // Handlers for S3 Connections
-    const changeHandler = (event) => {
+    const prepFileForUpload = (event) => {
         const file = event.target.files[0];
         setSelectedFile(file);
         setSrc(URL.createObjectURL(file));
     };
 
-    const handleSubmission = async () => {
+    const handleFileUpload = async () => {
         setPopup(false);
         console.log(src);
         try {
@@ -64,9 +64,9 @@ export function VideoUpload() {
                                     </label>
                                 </div>
                                 <p>Choose a video file (mp4/mov):</p>
-                                <input type="file" name="file" className="form-control" id="inputGroupFile04" onChange={changeHandler} />
+                                <input type="file" name="file" className="form-control" id="inputGroupFile04" onChange={prepFileForUpload} />
                                 <div>
-                                    <button onClick={() => { handleSubmission(); }}>Submit</button>
+                                    <button onClick={() => { handleFileUpload(); }}>Submit</button>
                                 </div>
                                 {subFile && (
                                     <>

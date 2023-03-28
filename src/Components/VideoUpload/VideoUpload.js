@@ -60,11 +60,7 @@ export function VideoUpload() {
     const prepFileForUpload = (event) => {
         const file = event.target.files[0];
         setSelectedFile(file);
-        setSrc(URL.createObjectURL(file));
-        const changeHandler = (event) => {
-            setSelectedFile(event.target.files[0]);
-            setSrc({ videoFile: URL.createObjectURL(event.target.files[0]) });
-        }
+        setSrc({ videoFile: URL.createObjectURL(file) });
     };
 
     const handleFileUpload = async () => {
@@ -111,11 +107,11 @@ export function VideoUpload() {
                                 <div>
                                     <button onClick={() => { handleFileUpload(); }}>Submit</button>
                                 </div>
-                                {subFile && (
+                                {isSoft && (
                                     <>
                                         <p>Choose a subtitles file:</p>
                                         <div className="input-group">
-                                            <input type="file" className="form-control" id="inputGroupFile04" />
+                                            <input type="file" className="form-control" id="inputGroupFile04" onChange={changeSubFile} />
                                         </div>
                                     </>
                                 )}

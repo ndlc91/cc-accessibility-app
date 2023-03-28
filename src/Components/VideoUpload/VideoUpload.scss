@@ -39,10 +39,16 @@
 
         }
 
+        .videojs {
+            height: 100%;
+            width: 100%;
+        }
+
     
     }
     .transcript {
         background-color: white;
+        color: #31546C;
         height: 60em;
         max-width: 40em;
         flex: 1;

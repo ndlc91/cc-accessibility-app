@@ -1,34 +1,70 @@
 import "./VideoUpload.scss";
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { useState } from 'react';
-import {VideoPlayer} from '../VideoPlayer/VideoPlayer';
+import React, { useState } from 'react';
+import {VideoJS} from '../VideoJS/VideoJS';
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 
 export function VideoUpload() {
     const [popup, setPopup] = useState(true);
-    const [subFile, setSubFile] = useState(false);
+    const [isSoft, setIsSoft] = useState(false);
     const API_ENDPOINT = "https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator";
     const [selectedFile, setSelectedFile] = useState();
-    const [src, setSrc] = useState();
+    const [src, setSrc] = useState({videoFile:"", subFile:""});
+    const playerRef = React.useRef(null);
+    
+    const videoJsOptions = {
+        height: "100%",
+        width: "100%",
+        fluid: true,
+        autoplay: false,
+        controls: true,
+        nativeTextTracks: false,
+        responsive: true,
+        sources: [{
+          src: src.videoFile,
+          type: 'video/mp4'
+        }]
+
+      };
+    
+      const handlePlayerReady = (player) => {
+        playerRef.current = player;
+    
+        // You can handle player events here, for example:
+        player.on('waiting', () => {
+          videojs.log('player is waiting');
+        });
+    
+        player.on('dispose', () => {
+          videojs.log('player will dispose');
+        });
+
+        player.addTextTrack("subtitles", "Viet", "vi")
+      };
+
 
     const handleRadioCheck = (e) => {
         const val = e.target.value;
         if (val === 'softSub') {
-            setSubFile(true);
+            setIsSoft(true);
         }
-        else setSubFile(false);
+        else setIsSoft(false);
+    };
+
+    const changeSubFile = (e) => {
+        setSrc({subFile: URL.createObjectURL(e.target.files[0])});
     };
 
     // Handlers for S3 Connections
     const changeHandler = (event) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-        setSrc(URL.createObjectURL(file));
+        setSelectedFile(event.target.files[0]);
+        setSrc({videoFile: URL.createObjectURL(event.target.files[0])});
     };
 
     const handleSubmission = async () => {
+        console.log(src.videoFile);
         setPopup(false);
-        console.log(src);
         try {
             const response = await axios({
                 method: "get",
@@ -41,6 +77,7 @@ export function VideoUpload() {
         } catch (e) {
             console.log(e);
         }
+
     };
 
     return (
@@ -66,29 +103,24 @@ export function VideoUpload() {
                                 </label>
                             </div>
                             <p>Choose a video file (mp4/mov):</p>
-                            <input type="file" name="file" class="form-control" id="inputGroupFile04" onChange={changeHandler} />
+                            <input type="file" class="form-control" id="inputGroupFile04" onChange={changeHandler} />
+
+                            {isSoft && (
+                                <>
+                                    <p>Choose a subtitles file:</p>
+                                        <input type="file" class="form-control" id="inputGroupFile03" onChange={changeSubFile}/>
+                                </>
+                            )}
                             <div>
                                 <button onClick={() =>{handleSubmission();}}>Submit</button>
                             </div>
-                            {subFile && (
-                                <>
-                                    <p>Choose a subtitles file:</p>
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="inputGroupFile04" />
-                                    </div>
-                                </>
-                            )}
                         </div>
                     </>)}
                     
                     {!popup && (
-                        <>
-                            <video  width="100%"
-                                    height="100%"
-                                    controls
-                                    src={src}
-                 ></video>
-                        </>
+                        <div className="videojs">
+                            <VideoJS options={videoJsOptions} onReady={handlePlayerReady}/>
+                        </div>
                     )}
 
                     

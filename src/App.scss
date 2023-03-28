@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 
-$primary-color: #31546C;
+
 
 .App {
     font-size: 12px;
@@ -11,7 +11,8 @@ $primary-color: #31546C;
 
 .nav {
     height: 3em;
-
+    
+    $primary-color: #31546C;
     .brand {
         font-weight: 900;
         color: $primary-color;
@@ -24,6 +25,7 @@ $primary-color: #31546C;
             bottom: .25em;
         }
     }
+
 }
 
 

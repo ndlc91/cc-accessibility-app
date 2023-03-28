@@ -26,7 +26,6 @@ export function VideoUpload() {
             src: src.videoFile,
             type: 'video/mp4'
         }]
-
     };
 
     const handlePlayerReady = (player) => {

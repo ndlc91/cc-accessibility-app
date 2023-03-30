@@ -4,8 +4,12 @@ import React, { useState } from 'react';
 import { VideoJS } from '../VideoJS/VideoJS';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
+import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
+
+
 
 export function VideoUpload() {
+
 
     const [popup, setPopup] = useState(true);
     const [isSoft, setIsSoft] = useState(false);
@@ -112,7 +116,7 @@ export function VideoUpload() {
 
                 <div className="transcript container">
                     <h3>Transcript</h3>
-                    <p>Transcript generating...</p>
+                    <TranscriptFetcher />
                 </div>
 
             </div>

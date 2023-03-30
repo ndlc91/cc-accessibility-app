@@ -19,6 +19,7 @@ export const VideoJS = (props) => {
       const player = playerRef.current = videojs(videoElement, options, () => {
         videojs.log('player is ready');
         onReady && onReady(player);
+        const textTrack = player.addTextTrack("subtitles", "Viet", "vi");
       });
 
     // Update existing player with new props here

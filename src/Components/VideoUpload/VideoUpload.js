@@ -14,35 +14,6 @@ export function VideoUpload() {
     const [src, setSrc] = useState({ videoFile: "", subFile: "" });
     const playerRef = React.useRef(null);
 
-    const videoJsOptions = {
-        height: "100%",
-        width: "100%",
-        fluid: true,
-        autoplay: false,
-        controls: true,
-        nativeTextTracks: false,
-        responsive: true,
-        sources: [{
-            src: src.videoFile,
-            type: 'video/mp4'
-        }]
-    };
-
-    const handlePlayerReady = (player) => {
-        playerRef.current = player;
-
-        // You can handle player events here, for example:
-        player.on('waiting', () => {
-            videojs.log('player is waiting');
-        });
-
-        player.on('dispose', () => {
-            videojs.log('player will dispose');
-        });
-
-        player.addTextTrack("subtitles", "Viet", "vi")
-    };
-
 
     const handleRadioCheck = (e) => {
         const val = e.target.value;
@@ -52,32 +23,42 @@ export function VideoUpload() {
         else setIsSoft(false);
     };
 
-    const changeSubFile = (e) => {
-        setSrc({ subFile: URL.createObjectURL(e.target.files[0]) });
+    const changeSubFile = (event) => {
+        const file = event.target.files[0];
+        console.log(file);
+        const temp = src.videoFile;
+        setSrc({videoFile: temp, subFile: URL.createObjectURL(file)});
+
     };
 
     // Handlers for S3 Connections
     const prepFileForUpload = (event) => {
         const file = event.target.files[0];
+        console.log(file);
         setSelectedFile(file);
-        setSrc({ videoFile: URL.createObjectURL(file) });
+        const temp = src.subFile;
+        setSrc({ videoFile: URL.createObjectURL(file), subFile: temp });
+
     };
 
     const handleFileUpload = async () => {
-        console.log(src.videoFile);
         setPopup(false);
-        try {
-            const response = await axios({
-                method: "get",
-                url: API_ENDPOINT,
-            });
-            console.log(response);
 
-            await axios.put(response.data.uploadURL, selectedFile);
+        console.log(src.videoFile);
 
-        } catch (e) {
-            console.log(e);
-        }
+        console.log(src.subFile);
+//        try {
+//            const response = await axios({
+//                method: "get",
+//                url: API_ENDPOINT,
+//            });
+//            console.log(response);
+//
+//            await axios.put(response.data.uploadURL, selectedFile);
+//
+//        } catch (e) {
+//            console.log(e);
+//        }
     };
 
     return (
@@ -120,7 +101,9 @@ export function VideoUpload() {
 
                     {!popup && (
                         <div className="videojs">
-                            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+                            <video src={src.videoFile} width="100%" height="100%" controls>
+                                <track className="bg_cyan" src={src.subFile} srclang="vi" label="Viet" kind="subtitles"></track>
+                            </video>
                         </div>
                     )}
 

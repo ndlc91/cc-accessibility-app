@@ -1,8 +1,6 @@
 import "./VideoUpload.scss";
 import axios from 'axios';
 import React, { useState } from 'react';
-import { VideoJS } from '../VideoJS/VideoJS';
-import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
 
@@ -16,7 +14,6 @@ export function VideoUpload() {
     const API_ENDPOINT = "https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator";
     const [selectedFile, setSelectedFile] = useState();
     const [src, setSrc] = useState({ videoFile: "", subFile: "" });
-    const playerRef = React.useRef(null);
 
 
     const handleRadioCheck = (e) => {
@@ -51,19 +48,19 @@ export function VideoUpload() {
         console.log(src.videoFile);
 
         console.log(src.subFile);
-//        try {
-//            const response = await axios({
-//                method: "get",
-//                url: API_ENDPOINT,
-//            });
-//            console.log(response);
-//
-//            await axios.put(response.data.uploadURL, selectedFile);
-//
-//        } catch (e) {
-//            console.log(e);
-//        }
-    };
+      try {
+          const response = await axios({
+              method: "get",
+              url: API_ENDPOINT,
+          });
+          console.log(response);
+
+          await axios.put(response.data.uploadURL, selectedFile);
+
+      } catch (e) {
+          console.log(e);
+      }
+};
 
     return (
         <>

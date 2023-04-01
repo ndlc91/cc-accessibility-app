@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'video.js/dist/video-js.css';
 import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
-import Form from 'react-bootstrap/Form';
+import { $ } from "video.js/dist/types/utils/dom";
 
 
 
@@ -15,6 +15,10 @@ export function VideoUpload() {
     const API_ENDPOINT = "https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator";
     const [selectedFile, setSelectedFile] = useState();
     const [src, setSrc] = useState({ videoFile: "", subFile: "" });
+
+    //used to rename the file, also used to fetch video and subtitle files.
+    const [key, setKey] = useState();
+    const [newFile, setNewFile] = useState();
 
     //Subtitles Styles states
     const [fontSize, setFontSize] = useState();
@@ -49,6 +53,17 @@ export function VideoUpload() {
     }
 
     // File Options Handler
+
+    const assignKeyValue = () => {
+        const randomID = parseInt(Math.random() * 10000000);
+        setKey(`${randomID}`);
+
+    }
+
+    const generateVideoName = (key) => {
+        return (key + '.mp4');
+    }
+
     const handleRadioCheck = (e) => {
         const val = e.target.value;
         if (val === 'softSub') {
@@ -62,7 +77,7 @@ export function VideoUpload() {
         const file = event.target.files[0];
         console.log(file);
         const temp = src.videoFile;
-        setSrc({videoFile: temp, subFile: URL.createObjectURL(file)});
+        setSrc({ videoFile: temp, subFile: URL.createObjectURL(file) });
 
     };
 
@@ -82,19 +97,19 @@ export function VideoUpload() {
         console.log(src.videoFile);
 
         console.log(src.subFile);
-//      try {
-//          const response = await axios({
-//              method: "get",
-//              url: API_ENDPOINT,
-//          });
-//          console.log(response);
-//
-//          await axios.put(response.data.uploadURL, selectedFile);
-//
-//      } catch (e) {
-//          console.log(e);
-//      }
-};
+        try {
+            const response = await axios({
+                method: "get",
+                url: API_ENDPOINT,
+            });
+            console.log(response);
+
+            await axios.put(response.data.uploadURL, selectedFile);
+
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     return (
         <>

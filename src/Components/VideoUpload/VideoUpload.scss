@@ -1,28 +1,53 @@
 @import '../../App.scss';
 
 
+:root {
+    --font-size: 12;
+    --color: black;
+    --font-family: Inter, sans-serif;
+    --red: 0;
+    --green: 0;
+    --blue: 0;
+    --alpha: 1;
+}
+$bg-color: rgba(var(--red), var(--green), var(--blue), var(--alpha));
+
 .wrap {
     display: flex;
     margin: 4em 2em;
     justify-content: space-around;
 
     .video {
-        background-color: #A6B3C6;
-        height: 45em;
-        max-width: 85em;
-        flex: 2;
+        max-width: 95em;
+        min-width: 40em;
         margin-right: 3em;
+        margin-left: 1em;
+    }
+    .customizer {
+        display: flex;
+        .sizeBut {
+            width: 10em;
+        }
+        margin-top: 4em;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .video-player {
+        background-color: #A6B3C6;
+        height: 50em;
         display: flex;
         justify-content: center;
         align-items: center;
 
         .popup {
             height: 25em;
-            width: 35em;
+            width: 34em;
             background-color: white;
             border-radius: 20px;
             text-align: left;
             padding: 1.5em;
+            margin: 1em;
             
             .form-check  {
                 margin-bottom: 2em;
@@ -38,10 +63,17 @@
             }
 
         }
+        .video-render{
+            width: 100%;
+            height: 100%;
+        }
 
         video::cue {
-            color: white;
-            font-family: monospace;
+            color: var(--color);
+            font-size: var(--font-size);
+            font-family: var(--font-family);
+            outline: 200px solid $bg-color;
+            background-image: linear-gradient($bg-color, $bg-color);
         }
     
     }
@@ -50,7 +82,12 @@
         color: #31546C;
         height: 60em;
         max-width: 40em;
-        flex: 1;
+        min-width: 20em;
+        flex: 2;
+        .transcript-file {
+            overflow-y: scroll;
+            height: 80%;
+        }
         
         h3{
             text-align: left;

@@ -10,7 +10,7 @@ const TranscriptFetcher = () => {
     const [transcript, setTranscript] = useState("");
 
     return (
-        <div>{transcript}</div>
+        <div className="transcript-file">{transcript}</div>
     )
 }
 

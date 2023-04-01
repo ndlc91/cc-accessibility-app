@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'video.js/dist/video-js.css';
 import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
-import { $ } from "video.js/dist/types/utils/dom";
+import Form from 'react-bootstrap/Form';
 
 
 
@@ -15,7 +15,6 @@ export function VideoUpload() {
     const API_ENDPOINT = "https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator";
     const [selectedFile, setSelectedFile] = useState();
     const [src, setSrc] = useState({ videoFile: "", subFile: "" });
-
     //used to rename the file, also used to fetch video and subtitle files.
     const [key, setKey] = useState();
     const [newFile, setNewFile] = useState();

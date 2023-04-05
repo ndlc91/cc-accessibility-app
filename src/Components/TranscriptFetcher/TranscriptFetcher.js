@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 const TranscriptFetcher = () => {
 
     useEffect(() => {
-        fetch('https://njnsubtitles.s3.us-east-2.amazonaws.com/5293333.json')
+        fetch('https://njnsubtitles.s3.us-east-2.amazonaws.com/8705306.json')
             .then((response) => response.json())
             .then((response) => setTranscript(response.results.transcripts[0].transcript))
     }, [])

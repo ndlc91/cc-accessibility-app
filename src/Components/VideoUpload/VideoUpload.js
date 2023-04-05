@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'video.js/dist/video-js.css';
 import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
+import TranscriptJobStatusFetcher from "../TranscriptFetcher/TranscriptJobStatusFetcher"
 import Form from 'react-bootstrap/Form';
 
 
@@ -71,7 +72,7 @@ export function VideoUpload() {
         else setIsSoft(false);
     };
 
-    // Handler for Uploading Sutitles File
+    // Handler for Uploading Subtitles File
     const changeSubFile = (event) => {
         const file = event.target.files[0];
         console.log(file);
@@ -214,7 +215,10 @@ export function VideoUpload() {
 
                 <div className="transcript container">
                     <h3>Transcript</h3>
-                    <TranscriptFetcher />
+                    <TranscriptFetcher /> 
+                    <TranscriptJobStatusFetcher 
+                    filename= {"8705306"}
+                    />
                 </div>
 
 

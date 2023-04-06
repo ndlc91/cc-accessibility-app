@@ -15,9 +15,13 @@ export function VideoUpload() {
     const API_ENDPOINT = "https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator";
     const [selectedFile, setSelectedFile] = useState();
     const [src, setSrc] = useState({ videoFile: "", subFile: "" });
+
     //used to rename the file, also used to fetch video and subtitle files.
     const [key, setKey] = useState();
     const [newFile, setNewFile] = useState();
+
+    //used to fetch the transcript files for the video
+    const [VTTtranscript, setVTTtranscript] = useState();
 
     //Subtitles Styles states
     const [fontSize, setFontSize] = useState();
@@ -25,6 +29,13 @@ export function VideoUpload() {
     const [fontName, setFontName] = useState();
     const [bgColor, setBgColor] = useState({});
     const [bgAlpha, setBgAlpha] = useState("1");
+
+
+    useEffect(() => {
+        axios.get('https://njnsubtitles.s3.us-east-2.amazonaws.com/111619.vtt')
+            .then((response) => console.log(response.data))
+            .then((response) => setVTTtranscript(response.data))
+    }, [])
 
     // Set styles for subtitles
     useEffect(() => {
@@ -48,7 +59,7 @@ export function VideoUpload() {
         const green = parseInt(val.substring(3, 5), 16);
         const blue = parseInt(val.substring(5, 7), 16);
 
-        setBgColor({hex: val, red: red, green: green, blue: blue, alpha: bgAlpha});
+        setBgColor({ hex: val, red: red, green: green, blue: blue, alpha: bgAlpha });
     }
 
     // File Options Handler
@@ -115,90 +126,90 @@ export function VideoUpload() {
             <div className='wrap'>
                 <div className="video container">
                     <div className="video-player">
-                    {popup && (
-                        <>
-                            <div className='popup container'>
-                                <h6>Choose an option below indicating your video:</h6>
-                                <div className="form-check" onChange={handleRadioCheck}>
-                                    <input value="raw" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
-                                    <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                        Is RAW with NO captions or subtitles
-                                    </label> <br />
-                                    <input value="softSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                    <label className="form-check-label" htmlFor="flexRadioDefault2">
-                                        Has soft subtitles (has a separate subtitles file)
-                                    </label> <br />
-                                    <input value="hardSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
-                                    <label className="form-check-label" htmlFor="flexRadioDefault3">
-                                        Has hard subtitles (the video already has subtitles embedded)
-                                    </label>
+                        {popup && (
+                            <>
+                                <div className='popup container'>
+                                    <h6>Choose an option below indicating your video:</h6>
+                                    <div className="form-check" onChange={handleRadioCheck}>
+                                        <input value="raw" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
+                                        <label className="form-check-label" htmlFor="flexRadioDefault1">
+                                            Is RAW with NO captions or subtitles
+                                        </label> <br />
+                                        <input value="softSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                        <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                            Has soft subtitles (has a separate subtitles file)
+                                        </label> <br />
+                                        <input value="hardSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
+                                        <label className="form-check-label" htmlFor="flexRadioDefault3">
+                                            Has hard subtitles (the video already has subtitles embedded)
+                                        </label>
+                                    </div>
+                                    <p>Choose a video file (mp4/mov):</p>
+                                    <input type="file" name="file" className="form-control" id="inputGroupFile04" onChange={prepFileForUpload} />
+                                    <div>
+                                        <button onClick={() => { handleFileUpload(); }}>Submit</button>
+                                    </div>
+                                    {isSoft && (
+                                        <>
+                                            <p>Choose a subtitles file:</p>
+                                            <div className="input-group">
+                                                <input type="file" className="form-control" id="inputGroupFile04" onChange={changeSubFile} />
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
-                                <p>Choose a video file (mp4/mov):</p>
-                                <input type="file" name="file" className="form-control" id="inputGroupFile04" onChange={prepFileForUpload} />
-                                <div>
-                                    <button onClick={() => { handleFileUpload(); }}>Submit</button>
-                                </div>
-                                {isSoft && (
-                                    <>
-                                        <p>Choose a subtitles file:</p>
-                                        <div className="input-group">
-                                            <input type="file" className="form-control" id="inputGroupFile04" onChange={changeSubFile} />
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        </>)}
+                            </>)}
 
-                    {!popup && (
-                        <div className="video-render">
-                            <video src={src.videoFile} width="100%" height="100%" controls muted>
-                                <track src={src.subFile} srclang="vi" label="Viet" kind="subtitles"></track>
-                            </video>
-                        </div>
-                    )}
+                        {!popup && (
+                            <div className="video-render">
+                                <video src={src.videoFile} width="100%" height="100%" controls muted>
+                                    <track src={src.subFile} srclang="vi" label="Viet" kind="subtitles"></track>
+                                </video>
+                            </div>
+                        )}
                     </div>
-                    
+
                     <div className="customizer">
                         <div >
                             <Form.Select className="Button" aria-label="Default select example" size="sm" onChange={(e) => setFontSize(e.target.value)}>
-                              <option>Font Size</option>
-                              <option value="8px">8</option>
-                              <option value="12px">12</option>
-                              <option value="16px">16</option>
-                              <option value="18px">18</option>
-                              <option value="20px">20</option>
-                              <option value="24px">24</option>
-                              <option value="28px">28</option>
-                              <option value="32px">32</option>
-                              <option value="36px">36</option>
-                              <option value="40px">40</option>
+                                <option>Font Size</option>
+                                <option value="8px">8</option>
+                                <option value="12px">12</option>
+                                <option value="16px">16</option>
+                                <option value="18px">18</option>
+                                <option value="20px">20</option>
+                                <option value="24px">24</option>
+                                <option value="28px">28</option>
+                                <option value="32px">32</option>
+                                <option value="36px">36</option>
+                                <option value="40px">40</option>
                             </Form.Select>
                         </div>
 
                         <div >
                             <Form.Select className="Button" aria-label="Default select example" size="sm" onChange={(e) => setFontName(e.target.value)}>
-                              <option>Font Name</option>
-                              <option value="Arial">Arial</option>
-                              <option value="Tahoma">Tahoma</option>
-                              <option value="Georgia">Georgia</option>
-                              <option value="Monospace">Monospace</option>
-                              <option value="Fantasy">Fantasy</option>
-                              <option value="Helvetica">Helvetica</option>
-                              <option value="Times-New-Roman">Times New Roman</option>
-                              <option value="Verdana">Verdana</option>
-                              <option value="Gill-Sans">Gill Sans</option>
-                              <option value="Palatino">Palatino</option>
+                                <option>Font Name</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Tahoma">Tahoma</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Monospace">Monospace</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Times-New-Roman">Times New Roman</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Gill-Sans">Gill Sans</option>
+                                <option value="Palatino">Palatino</option>
                             </Form.Select>
                         </div>
-                    
+
                         <div>
                             <label for="colorWell">Color:</label>
-                            <input type="color" value={color} id="colorWell" onChange={(e) => setColor(e.target.value)}/>
+                            <input type="color" value={color} id="colorWell" onChange={(e) => setColor(e.target.value)} />
                         </div>
 
                         <div>
                             <label for="bg-color">Background Color:</label>
-                            <input type="color" value={bgColor.hex} id="bg-color" onChange={handleBgChange}/>
+                            <input type="color" value={bgColor.hex} id="bg-color" onChange={handleBgChange} />
                         </div>
 
                         <div>
@@ -218,7 +229,7 @@ export function VideoUpload() {
                 </div>
 
 
-                
+
 
             </div>
 

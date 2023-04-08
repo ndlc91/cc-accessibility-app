@@ -67,7 +67,7 @@ export function VideoUpload() {
         let blob = oldFile.slice(0, oldFile.size, oldFile.type);
         const randomID = parseInt(Math.random() * 10000000);
         setKey(`${randomID}`);
-        const newVideoName = `${randomID}.mp4`;
+        const newVideoName = `${randomID}`;
         const tempNewFile = new File([blob], newVideoName, { type: 'video/mp4' });
         setNewFile(tempNewFile);
         return tempNewFile;
@@ -93,11 +93,10 @@ export function VideoUpload() {
     // Handlers for S3 Connections
     const prepFileForUpload = (event) => {
         const file = event.target.files[0];
-        console.log(generateNewFile(file));
-        setSelectedFile(newFile);
-
+        const tempNewFile = generateNewFile(file);
+        setSelectedFile(tempNewFile);
         const temp = src.subFile;
-        setSrc({ videoFile: URL.createObjectURL(newFile), subFile: temp });
+        setSrc({ videoFile: URL.createObjectURL(tempNewFile), subFile: temp });
 
     };
     //Uploads the video file to the S3 bucket

@@ -93,14 +93,11 @@ export function VideoUpload() {
     // Handlers for S3 Connections
     const prepFileForUpload = (event) => {
         const file = event.target.files[0];
-        //console.log(file);
         console.log(generateNewFile(file));
-        //console.log(newFile);
-        //setSelectedFile(newFile);
-        //console.log(selectedFile);
+        setSelectedFile(newFile);
 
-        //const temp = src.subFile;
-        //setSrc({ videoFile: URL.createObjectURL(file), subFile: temp });
+        const temp = src.subFile;
+        setSrc({ videoFile: URL.createObjectURL(newFile), subFile: temp });
 
     };
     //Uploads the video file to the S3 bucket

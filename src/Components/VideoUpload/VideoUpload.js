@@ -13,7 +13,6 @@ export function VideoUpload() {
 
     const [popup, setPopup] = useState(true); // states for page rendering
     const [isSoft, setIsSoft] = useState(false); // states for page rendering
-    const API_ENDPOINT = "https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator";
     const [selectedFile, setSelectedFile] = useState();
     const [src, setSrc] = useState({ videoFile: "", subFile: "" });
 
@@ -31,10 +30,9 @@ export function VideoUpload() {
     const [bgColor, setBgColor] = useState({});
     const [bgAlpha, setBgAlpha] = useState("1");
 
-
+    //get the vtt file for use by the video
     useEffect(() => {
         axios.get('https://njnsubtitles.s3.us-east-2.amazonaws.com/111619.vtt')
-            .then((response) => console.log(response.data))
             .then((response) => setVTTtranscript(response.data))
     }, [])
 
@@ -63,16 +61,16 @@ export function VideoUpload() {
         setBgColor({ hex: val, red: red, green: green, blue: blue, alpha: bgAlpha });
     }
 
-    // File Options Handler
 
-    const assignKeyValue = () => {
+
+    const generateNewFile = (oldFile) => {
+        let blob = oldFile.slice(0, oldFile.size, oldFile.type);
         const randomID = parseInt(Math.random() * 10000000);
         setKey(`${randomID}`);
-
-    }
-
-    const generateVideoName = (key) => {
-        return (key + '.mp4');
+        const newVideoName = `${randomID}.mp4`;
+        const tempNewFile = new File([blob], newVideoName, { type: 'video/mp4' });
+        setNewFile(tempNewFile);
+        return tempNewFile;
     }
 
     const handleRadioCheck = (e) => {
@@ -95,28 +93,30 @@ export function VideoUpload() {
     // Handlers for S3 Connections
     const prepFileForUpload = (event) => {
         const file = event.target.files[0];
-        console.log(file);
-        setSelectedFile(file);
-        const temp = src.subFile;
-        setSrc({ videoFile: URL.createObjectURL(file), subFile: temp });
+        //console.log(file);
+        console.log(generateNewFile(file));
+        //console.log(newFile);
+        //setSelectedFile(newFile);
+        //console.log(selectedFile);
+
+        //const temp = src.subFile;
+        //setSrc({ videoFile: URL.createObjectURL(file), subFile: temp });
 
     };
-
+    //Uploads the video file to the S3 bucket
     const handleFileUpload = async () => {
         setPopup(false);
-
         console.log(src.videoFile);
-
         console.log(src.subFile);
+        const API_ENDPOINT = `https://gwzlvy6oc6.execute-api.us-east-1.amazonaws.com/url-generator?Key=${newFile.name}`;
+        console.log(API_ENDPOINT);
         try {
             const response = await axios({
                 method: "get",
                 url: API_ENDPOINT,
             });
             console.log(response);
-
             await axios.put(response.data.uploadURL, selectedFile);
-
         } catch (e) {
             console.log(e);
         }
@@ -140,10 +140,7 @@ export function VideoUpload() {
                                         <label className="form-check-label" htmlFor="flexRadioDefault2">
                                             Has soft subtitles (has a separate subtitles file)
                                         </label> <br />
-                                        <input value="hardSub" className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" />
-                                        <label className="form-check-label" htmlFor="flexRadioDefault3">
-                                            Has hard subtitles (the video already has subtitles embedded)
-                                        </label>
+                                        for
                                     </div>
                                     <p>Choose a video file (mp4/mov):</p>
                                     <input type="file" name="file" className="form-control" id="inputGroupFile04" onChange={prepFileForUpload} />
@@ -204,17 +201,17 @@ export function VideoUpload() {
                         </div>
 
                         <div>
-                            <label for="colorWell">Color:</label>
+                            <label htmlFor="colorWell">Color:</label>
                             <input type="color" value={color} id="colorWell" onChange={(e) => setColor(e.target.value)} />
                         </div>
 
                         <div>
-                            <label for="bg-color">Background Color:</label>
+                            <label htmlFor="bg-color">Background Color:</label>
                             <input type="color" value={bgColor.hex} id="bg-color" onChange={handleBgChange} />
                         </div>
 
                         <div>
-                            <label for="bg-opacity">Background Opacity: {bgAlpha}</label>
+                            <label htmlFor="bg-opacity">Background Opacity: {bgAlpha}</label>
                             <input type="range" value={bgAlpha} id="bg-opacity" min="0.1" max="1" step="0.1" onChange={(e) => setBgAlpha(e.target.value)} />
                         </div>
 
@@ -226,9 +223,9 @@ export function VideoUpload() {
 
                 <div className="transcript container">
                     <h3>Transcript</h3>
-                    <TranscriptFetcher /> 
-                    <TranscriptJobStatusFetcher 
-                    filename= {"8705306"}
+                    <TranscriptFetcher />
+                    <TranscriptJobStatusFetcher
+                        filename={"8705306"}
                     />
                 </div>
 

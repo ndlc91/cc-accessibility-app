@@ -221,7 +221,7 @@ export function VideoUpload() {
                     <h3>Transcript</h3>
                     <TranscriptFetcher />
                     <TranscriptJobStatusFetcher
-                        filename={"8705306"}
+                        filename={key}
                     />
                 </div>
 

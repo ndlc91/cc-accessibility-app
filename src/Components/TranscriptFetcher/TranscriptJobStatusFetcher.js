@@ -1,44 +1,36 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+// A function to get the status of a transcription job from aws
 const TranscriptJobStatusFetcher = ({ filename }) => {
 
     const [status, setStatus] = useState("");
 
     useEffect(() => {
-        async function fetchStatus() {
+        let interval = setInterval (() => {
             const API_ENDPOINT = `https://82odtjxlp5.execute-api.us-east-2.amazonaws.com/transcriptstatus?key=${filename}`;
             //console.log(API_ENDPOINT);
-
-            try {
-                const response = await axios({
-                    method: "get",
-                    url: API_ENDPOINT,
-                });
-                //console.log(response);
-
-                setStatus(response.data)
-
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        fetchStatus(filename);
+            axios.get(API_ENDPOINT)
+                .then((response) => {
+                    setStatus(response.data)
+                    //console.log(response);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                //console.log(status)
+        }, 15000); // runs the interval every 15000 milliseconds (15 seconds)
+        return() => clearInterval(interval);
     }, []);
-
-
-    if (status.statusCode) {
-        if (status.statusCode === 200) {
-            return (
-                <div className="jobStatus">Transcription Status: {status.status}</div>
-            )
+    // returns the status after succesfully finding a job at the bottom of the transcript div
+    if(status.statusCode === 200){
+        if(status.status === "FAILED"){
+           return <p>Status: {status.status}. {status.failureReason}</p>
         }
         else {
-            return (
-                <div className="jobStatus">Transcription Error: {JSON.stringify({ status })}</div>
+            return(
+                <p>Status: {status.status}</p>
             )
-
-        }
+        } 
     }
 }
 

@@ -6,8 +6,6 @@ import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
 import TranscriptJobStatusFetcher from "../TranscriptFetcher/TranscriptJobStatusFetcher"
 import Form from 'react-bootstrap/Form';
 
-
-
 export function VideoUpload() {
 
 

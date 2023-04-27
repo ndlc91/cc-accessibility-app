@@ -2,7 +2,6 @@ import "./VideoUpload.scss";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'video.js/dist/video-js.css';
-import TranscriptFetcher from "../TranscriptFetcher/TranscriptFetcher";
 import TranscriptJobStatusFetcher from "../TranscriptFetcher/TranscriptJobStatusFetcher"
 import Form from 'react-bootstrap/Form';
 
@@ -217,15 +216,8 @@ export function VideoUpload() {
 
                 <div className="transcript container">
                     <h3>Transcript</h3>
-                    <TranscriptFetcher />
-                    <TranscriptJobStatusFetcher
-                        filename={key}
-                    />
+                    <TranscriptJobStatusFetcher filename={key} />
                 </div>
-
-
-
-
             </div>
 
         </>

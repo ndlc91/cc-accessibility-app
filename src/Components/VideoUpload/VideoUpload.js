@@ -16,9 +16,15 @@ export function VideoUpload() {
     //used to rename the file, also used to fetch video and subtitle files.
     const [key, setKey] = useState();
     const [newFile, setNewFile] = useState();
+    const [transcriptState, setTranscriptState] = useState(false);
 
-    //used to fetch the transcript files for the video
-    const [VTTtranscript, setVTTtranscript] = useState();
+    const handleTranscriptState = () => {
+        console.log(transcriptState);
+        setTranscriptState(true);
+        console.log("state changes");
+        console.log(transcriptState);
+    }
+
 
     //Subtitles Styles states
     const [fontSize, setFontSize] = useState();
@@ -28,10 +34,21 @@ export function VideoUpload() {
     const [bgAlpha, setBgAlpha] = useState("1");
 
     //get the vtt file for use by the video
+    
+
     useEffect(() => {
-        axios.get('https://njnsubtitles.s3.us-east-2.amazonaws.com/111619.vtt')
-            .then((response) => setVTTtranscript(response.data))
-    }, [])
+        if (transcriptState){
+            fetch(`https://njnsubtitles.s3.us-east-2.amazonaws.com/${key}.vtt`)
+                .then((response) => {
+                    response.blob().then((myURL) => {
+                        const objectURL = URL.createObjectURL(myURL);
+                        const temp = src.videoFile;
+                        setSrc({videoFile: temp, subFile: objectURL});
+                    })
+                });
+        }
+    }, [transcriptState])
+
 
     // Set styles for subtitles
     useEffect(() => {
@@ -154,7 +171,7 @@ export function VideoUpload() {
                         {!popup && (
                             <div className="video-render">
                                 <video src={src.videoFile} width="100%" height="100%" controls muted>
-                                    <track src={src.subFile} srclang="vi" label="Viet" kind="subtitles"></track>
+                                    <track src={src.subFile} srclang="vi" label="English" kind="subtitles"></track>
                                 </video>
                             </div>
                         )}
@@ -216,7 +233,7 @@ export function VideoUpload() {
 
                 <div className="transcript container">
                     <h3>Transcript</h3>
-                    <TranscriptJobStatusFetcher filename={key} />
+                    <TranscriptJobStatusFetcher filename={key} changeState={handleTranscriptState}/>
                 </div>
             </div>
 

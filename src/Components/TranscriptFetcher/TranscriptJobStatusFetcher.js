@@ -3,10 +3,14 @@ import axios from 'axios';
 import TranscriptFetcher from "./TranscriptFetcher";
 
 // A function to get the status of a transcription job from aws
-const TranscriptJobStatusFetcher = ({ filename }) => {
+const TranscriptJobStatusFetcher = ({ filename, changeState}) => {
 
     const [status, setStatus] = useState("");
 
+    const handleStateChange = () => {
+        changeState();
+    }
+    
     useEffect(() => {
         let interval = setInterval (() => {
             const API_ENDPOINT = `https://82odtjxlp5.execute-api.us-east-2.amazonaws.com/transcriptstatus?key=${filename}`;
@@ -26,7 +30,12 @@ const TranscriptJobStatusFetcher = ({ filename }) => {
     // returns the status after succesfully finding a job at the bottom of the transcript div
     if(status.statusCode === 200){
         if(status.status === "COMPLETED"){
-            return <TranscriptFetcher filename={filename}/> // COMPLETED
+            return (
+            <>
+                <TranscriptFetcher filename={filename} />
+                <button onClick={() => { handleStateChange(); }}>Add captions to video</button>
+            </>
+            ) // COMPLETED
         }
         else if(status.status === "FAILED"){
            return <p>Status: {status.status}. {status.failureReason}</p> // FAILED
